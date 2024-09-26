@@ -1,0 +1,32 @@
+<template>
+  <div >
+    <div style="display: flex; justify-content: space-around;" v-for="item in routers" :key="item.name">
+      <el-tag
+        v-for="tag in item.children"
+        :key="tag.name">
+        <router-link :to="tag.path"> {{tag.name}}</router-link>
+      </el-tag>
+    </div>
+    <transition name="fade-transform" mode="out-in">
+      <router-view />
+    </transition>
+  </div>
+</template>
+
+<script>
+import router from '../router'
+
+export default {
+  
+  data() {
+    return {
+      routers: []
+    }
+  },
+  mounted() {
+    const { options } = router
+    this.routers = options.routes
+  },
+}
+
+</script>
