@@ -7,6 +7,7 @@
         <router-link :to="tag.path"> {{tag.name}}</router-link>
       </el-tag>
     </div>
+    {{ name }}
     <transition name="fade-transform" mode="out-in">
       <router-view />
     </transition>
@@ -27,6 +28,9 @@ export default {
     const { options } = router
     this.routers = options.routes
   },
+  errorCaptured (err, vm, info) {
+    console.log(err, vm, info)
+  }
 }
 
 </script>

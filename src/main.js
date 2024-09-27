@@ -15,6 +15,11 @@ import router from './router'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
+
+Vue.config.errorHandler = function(err, vm, info) {
+  console.log(`Error: ${err.toString()}\nInfo: ${info}`);
+};
+
 new Vue({
   router,
   render: h => h(App),

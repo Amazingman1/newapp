@@ -91,7 +91,7 @@ export default {
       this.$set(this.tableData[this.curryIndex], 'amount', amount)
     },
     add (index, rows) {
-      rows[index].child.push({ name: '新儿子' })
+      rows[index].child.push({ name: '新儿子' },2)
     },
     deleteRow (index, rows) {
       rows.splice(index, 1)
