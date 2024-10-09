@@ -1,6 +1,6 @@
 <template>
   <div >
-    <div style="display: flex; justify-content: space-around;" v-for="item in routers" :key="item.name">
+    <div class="table-td-status" style="display: flex; justify-content: space-around;" v-for="item in routers" :key="item.name">
       <el-tag
         v-for="tag in item.children"
         :key="tag.name">
@@ -34,3 +34,8 @@ export default {
 }
 
 </script>
+<style scoped>
+  .table-td-status {
+    padding: 0;
+  }
+</style>
