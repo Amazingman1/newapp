@@ -18,8 +18,24 @@ import TableMove from '../components/TableMove.vue'
 export default {
   components: {
     TableMove
+  },  
+  mounted() {
+    const promise = new Promise (() => {
+      console.log(1)
+    })
+    promise.then(() => {
+      console.log(2)
+    }, () => {
+      console.log(3)
+    }).catch(() => {
+      console.log(4)
+    })
+
+    console.log(5)
   }
 }
+
+
 </script>
 
 

@@ -305,9 +305,9 @@ function intersection(arr1, arr2) {
 
 ```js
 
-const promise = new Promise (resolve, reject) => {
+const promise = new Promise ((resolve, reject) => {
   console.log(1)
-}
+})
 
 promise.then(() => {
   console.log(2)
