@@ -205,3 +205,12 @@ const state = inject('state')
 - 不推荐同时使用
 
 11.v-for 也可以使用 `of`替代`in`这样写更接近js的迭代器的语法
+
+vue3的响应式原理：
+
+- 核心是`Proxy`代理数据对象
+- 理论是：数据代理 + 数据劫持 + 发布订阅模式
+- 在初始化`vue`实例时，通过`Proxy`代理目标对象，并且对目标对象进行劫持，动态指定getter和setter。通过`Reflect`操作对象，实现数据操作。
+- 当`Proxy`代理的数据发生改变时，会触发`Proxy`的`setter`方法，然后通过`Reflect`操作对象属性，同时触发它Dep实例的notify方法进行依赖分发，通知所有依赖的Watcher实例执行内部回调函数
+- `Proxy`和`Reflect`是ES6新增的API，`Proxy`用于创建一个对象的代理，从而实现对目标对象的操作。`Reflect`对象提供了拦截 JavaScript 操作的方法。
+

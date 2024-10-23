@@ -277,3 +277,47 @@
    // 暴力循环
    //  1. 构建key与index的映射表，用新开始的key去表里差找，如果找到了就把该节点移动到最前面，原来的位置用undifind占为，防止数组塌陷和保持映射表不变，如果没找到就把新节点插入。
 ```
+
+## 兄弟选择器
+
+```css
+li + li {
+    color: #f00;
+}
+.box:nth-child(2n+1) {
+    background: #fff;
+}
+```
+
+## 2个数组的交集
+
+```js
+function intersection(arr1, arr2) {
+    let result = [];
+    let obj = {};
+    arr1.forEach(item => obj[item] = true);
+    arr2.forEach(item => obj[item] && result.push(item));
+    return result;
+}
+```
+
+## promise 打印结果
+
+```js
+
+const promise = (resolve, reject) => {
+  console.log(1)
+}
+
+promise.then(() => {
+  console.log(2)
+}, () => {
+  console.log(3)
+}).catch(() => {
+  console.log(4)
+})
+
+console.log(5)
+
+// 1 5 
+```
