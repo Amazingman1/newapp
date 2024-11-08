@@ -12,7 +12,13 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue'
 import router from './router'
+import VxeUI from 'vxe-pc-ui'
+import 'vxe-pc-ui/lib/style.css'
+import VxeUITable from 'vxe-table'
+import 'vxe-table/lib/style.css'
 
+Vue.use(VxeUI)
+Vue.use(VxeUITable)
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 

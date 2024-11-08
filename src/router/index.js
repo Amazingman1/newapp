@@ -21,6 +21,18 @@ export default new Router({
             name: 'TableFa',
             component: () =>
               import('../views/tableFa.vue')
+          },
+          {
+            path: '/home/tableSon',
+            name: 'TableSon',
+            component: () =>
+              import('../views/vxTable.vue')
+          },
+          {
+            path: '/home/tableMix',
+            name: 'tableMix',
+            component: () =>
+              import('../views/tableMix.vue')
           }
         ]
       },
