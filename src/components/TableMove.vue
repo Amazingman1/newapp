@@ -2,10 +2,10 @@
   <div>
     <el-button type="primary" @click="addIf">增加子条件</el-button>
     <el-button type="primary" @click="saveTable">保存</el-button>
-    <el-table :data="tableData" border style="width: 100%" :span-method="objectSpanMethod" @cell-click="handleClick">
+    <el-table :data="tableData" border style="width: 100%" :span-method="objectSpanMethod" @cell-click="handleClick" @row-contextmenu="handleContextmenu">
       <el-table-column prop="name" label="姓名" width="120">
         <el-table-column v-for="item in colList" :key="item.label" :prop=item.prop :label=item.label
-          @click="handleContextmenu" :render-header="item.render">
+           :render-header="item.render">
           <template slot-scope="scope">
             <el-input v-model="tableData[scope.$index][item.prop]"
               placeholder="请输入内容"></el-input>
@@ -14,6 +14,10 @@
         <!-- <el-table-column prop="month" label="月"></el-table-column> -->
       </el-table-column>
       <el-table-column prop="province" label="省份" width="120">
+        <template slot-scope="scope">
+            <el-input v-model="tableData[scope.$index].province"
+              placeholder="请输入内容"></el-input>
+        </template>
       </el-table-column>
       <el-table-column prop="city" label="市区" width="120">
       </el-table-column>
@@ -96,6 +100,7 @@ export default {
       this.getSpanArr(this.tableData)
     },
     handleContextmenu (row, column, event) {
+      event.preventDefault()
       console.log(row, column, event)
       // this.$refs.menu.open(event, row);
     },
