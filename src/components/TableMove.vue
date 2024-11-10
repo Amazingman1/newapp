@@ -44,7 +44,7 @@ export default {
           this.pos = 0
         } else {
           // 判断当前元素与上一个元素是否相同
-          if (data[i].year === data[i - 1].year) {
+          if (data[i].id === data[i - 1].id) {
             this.spanArr[this.pos] += 1;
             this.spanArr.push(0);
           } else {
@@ -87,6 +87,8 @@ export default {
         date: '2016-05-02',
         name: '王小虎',
         year: row.year,
+        id: row.id,
+        id1: [row.id1[0], row.id1[1]+1],
         month: '7',
         province: '苏州',
         city: '普陀区',
@@ -139,6 +141,8 @@ export default {
       spanArr: [],
       pos: 0,
       tableData: [{
+        id: 1,
+        id1: [1, 0],
         date: '2016-05-02',
         name: '王小虎',
         year: '2023',
@@ -154,7 +158,8 @@ export default {
         year: '2023',
         month: '6',
         day: '4',
-
+        id: 1,
+        id1: [1,1],
         province: '上海',
         city: '普陀区',
         address: '上海市普陀区金沙江路 1517 弄',
@@ -166,7 +171,8 @@ export default {
         year: '2024',
         month: '5',
         day: '3',
-
+       id: 2,
+        id1: [2,0],
         city: '普陀区',
         address: '上海市普陀区金沙江路 1519 弄',
         zip: 200335
@@ -176,6 +182,8 @@ export default {
         province: '上海',
         year: '2024',
         day: '2',
+        id: 2,
+        id1: [2,1],
         city: '普陀区',
         month: '6',
         address: '上海市普陀区金沙江路 1516 弄',
