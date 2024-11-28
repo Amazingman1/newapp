@@ -6,7 +6,7 @@ export default new Router({
     mode: 'history',
     routes: [
       {
-        path: '/table',
+        path: '/',
         name: 'tableMove',
         component: Home,
         children: [
@@ -32,7 +32,13 @@ export default new Router({
             path: '/home/tableMix',
             name: 'tableMix',
             component: () =>
-              import('../views/tableMix.vue')
+              import('../views/tableMix copy.vue')
+          },
+          {
+            path: '/home/TreeSelect',
+            name: 'TreeSelect',
+            component: () =>
+              import('../views/TreeSelect.vue')
           }
         ]
       },
