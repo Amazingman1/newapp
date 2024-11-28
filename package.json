@@ -11,6 +11,8 @@
     "@visactor/vtable": "^1.10.4",
     "core-js": "^3.8.3",
     "element-ui": "^2.15.14",
+    "sass": "^1.81.0",
+    "sass-loader": "^16.0.3",
     "vue": "^2.6.14",
     "vue-router": "^3.6.5",
     "vue-table-canvas-tcsl": "^2.1.0",
