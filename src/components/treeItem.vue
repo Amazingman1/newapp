@@ -11,7 +11,7 @@
       <select v-if="node.type !== 'const'" v-model="node.name" @change="changeVaule">
         <option v-for="arg in args[node.type]" :key="arg.value" :value="arg.value">{{ arg.label }}</option>
       </select>
-      <input v-else @blur="bulrFun"/>
+      <input v-else @blur="bulrFun" />
     </div>
     <div v-else>
       <div v-if="node.type === 'fun'" class="children">
@@ -24,7 +24,7 @@
         <span>)</span>
       </div>
       <div v-else>
-        <span class="foc-txt"  :class="colorText[node.type]" @click="changeitem">{{ node.name }}</span>
+        <span class="foc-txt" :class="colorText[node.type]" @click="changeitem">{{ node.name }}</span>
       </div>
     </div>
   </div>
@@ -68,18 +68,18 @@ export default {
         const: 'const-text',
         fun: 'fun-text',
       },
-  
+
     };
   },
   methods: {
-    bulrFun(val) {
+    bulrFun (val) {
 
       console.log(val.target.value)
       // eslint-disable-next-line vue/no-mutating-props
       this.node.name = val.target.value
       // this.emitUpdate()
     },
-    changeitem() {
+    changeitem () {
       // eslint-disable-next-line vue/no-mutating-props
       this.node.name = ''
       // eslint-disable-next-line vue/no-mutating-props
@@ -95,9 +95,9 @@ export default {
     onTypeChange () {
       // 当类型切换时，清空子节点
       if (this.node.type === "value") {
-      // eslint-disable-next-line vue/no-mutating-props
+        // eslint-disable-next-line vue/no-mutating-props
         this.node.name = "";
-      // eslint-disable-next-line vue/no-mutating-props
+        // eslint-disable-next-line vue/no-mutating-props
         this.node.children = [];
       }
       this.emitUpdate(); // 通知父组件
@@ -115,7 +115,7 @@ export default {
         name: "",
         type: "",
         children: [],
-      },{
+      }, {
         name: "",
         type: "value",
         children: [],
@@ -132,28 +132,34 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .recursive-component {
   border-radius: 4px;
   display: flex;
 }
-.var-text{
-  color:red
+
+.var-text {
+  color: red
 }
-.const-text{
-  color:blue
+
+.const-text {
+  color: blue
 }
-.fun-text{
+
+.fun-text {
   color: green
 }
+
 .children {
   margin-left: 10px;
   display: flex;
 
 }
-.foc-txt{
+
+.foc-txt {
   /* color: #409eff; */
   cursor: pointer;
   padding: 0 5px;
 }
+
 </style>
