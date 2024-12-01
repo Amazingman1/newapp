@@ -32,26 +32,27 @@ export default {
       }
     }
   },
-  computed: {
-    selectFun: {
-      get () {
-        return this.selectValue
-      },
-      set (val) {
-        this.$emit('update:selectValue', val)
-      }
-    },
-    // item: {
-    //   get () {
-    //     return this.addArgs
-    //   },
-    //   set (val) {
-    //     this.$emit('update:addArgs', val)
-    //   }
-    // }
-  },
+  // computed: {
+  //   selectFun: {
+  //     get () {
+  //       return this.selectValue
+  //     },
+  //     set (val) {
+  //       this.$emit('update:selectValue', val)
+  //     }
+  //   },
+  //   // item: {
+  //   //   get () {
+  //   //     return this.addArgs
+  //   //   },
+  //   //   set (val) {
+  //   //     this.$emit('update:addArgs', val)
+  //   //   }
+  //   // }
+  // },
   data () {
     return {
+      selectFun: '',
       options: [{
         value: 'fun',
         label: '函数'
