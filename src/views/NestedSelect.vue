@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="inline-input" style="display: flex;">
     <div v-if="!dataSele.num" style="display: flex;">
@@ -125,6 +126,7 @@ export default {
   },
   methods: {
     changeitem() {
+      // eslint-disable-next-line vue/no-mutating-props
       this.dataSele.num = ''
       this.fun = ''
       // this.dataSele.args = []
@@ -138,6 +140,7 @@ export default {
       // this.value = val
       this.changeFun()
       if (this.dataSele.num === "var") {
+      // eslint-disable-next-line vue/no-mutating-props
         this.dataSele.args = [];
       } else {
 
@@ -147,6 +150,7 @@ export default {
           num: '',
           args: []
         }
+      // eslint-disable-next-line vue/no-mutating-props
         this.dataSele.args.push(obj, obj)
       }
       // this.fun = 'value'
@@ -154,6 +158,7 @@ export default {
     },
     updateChild(index, updatedChild) {
       // 更新子节点的数据
+      // eslint-disable-next-line vue/no-mutating-props
       this.dataSele.args[index] = updatedChild;
       this.changeFun(); // 通知父组件
     },

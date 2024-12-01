@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h3>递归组件示例</h3>
-    <RecursiveComponent :node="treeData" @update="updateTree" />
-    <!-- <pre>{{ JSON.stringify(treeData, null, 2) }}</pre> -->
+    <RecursiveComponent v-for="(item, index) in treeDataList" :key="index" :node="item" @update="updateTree" />
     <el-button @click="save" type="primary">保存</el-button>
 
   </div>
@@ -17,19 +15,33 @@ export default {
     return {
       // 树的初始数据
       treeData: {
-        name: "root",
-        type: "function",
+        name: "",
+        type: "",
         children: [],
       },
+      treeDataList: [
+        {
+          name: "",
+          type: "",
+          children: [],
+        },
+        {
+          name: "",
+          type: "",
+          children: [],
+        },
+        
+      ]
     };
   },
   methods: {
     // 接收子组件传递的更新数据
     updateTree(updatedNode) {
+      console.log(updatedNode, '更新数据');
       this.treeData = updatedNode;
     },
     save() {
-      console.log(this.treeData, '加载结果');
+      console.log(this.treeDataList, '加载结果');
     }
   },
 };

@@ -1,26 +1,31 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="recursive-component">
-    <div class="node">
+    <div v-if="!node.name" class="node">
       <!-- 显示当前节点 -->
       <select v-model="node.type" @change="onTypeChange">
-        <option value="value">值</option>
-        <option value="function">函数</option>
+        <option value="fun">函数</option>
+        <option value="var">变量</option>
+        <option value="const">常量</option>
       </select>
-      <select v-model="node.name" @change="emitUpdate">
-        <option v-for="arg in args[node.type]" :key="arg.value" :value="arg.value" >{{arg.label}}</option>
-        <!-- <option value="min">min</option> -->
+      <select v-if="node.type !== 'const'" v-model="node.name" @change="changeVaule">
+        <option v-for="arg in args[node.type]" :key="arg.value" :value="arg.value">{{ arg.label }}</option>
       </select>
+      <input v-else @blur="bulrFun"/>
     </div>
-
-    <!-- 如果当前节点是函数类型，则渲染其子节点 -->
-    <div v-if="node.type === 'function'" class="children">
-      <RecursiveComponent
-        v-for="(child, index) in node.children"
-        :key="index"
-        :node="child"
-        @update="updateChild(index, $event)"
-      />
-      <button @click="addChild">添加子节点</button>
+    <div v-else>
+      <div v-if="node.type === 'fun'" class="children">
+        <span @click="changeitem" :class="colorText[node.type]" class="foc-txt">{{ node.name }}</span>
+        <span>(</span>
+        <span v-for="(child, index) in node.children" :key="index" style="display: flex;">
+          <RecursiveComponent :node="child" @update="updateChild(index, $event)" />
+          <div v-if="index !== node.children.length - 1">,</div>
+        </span>
+        <span>)</span>
+      </div>
+      <div v-else>
+        <span class="foc-txt"  :class="colorText[node.type]" @click="changeitem">{{ node.name }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -34,18 +39,18 @@ export default {
       required: true,
     },
   },
-  data() {
+  data () {
     return {
       args: {
         fun: [
-        {
-          label: 'max',
-          value: 'max'
-        },
-        {
-          label: 'min',
-          value: 'min'
-        }
+          {
+            label: 'max',
+            value: 'max'
+          },
+          {
+            label: 'min',
+            value: 'min'
+          }
         ],
         var: [
           {
@@ -58,36 +63,68 @@ export default {
           }
         ]
       },
+      colorText: {
+        var: 'var-text',
+        const: 'const-text',
+        fun: 'fun-text',
+      },
+  
     };
   },
   methods: {
-    emitUpdate() {
+    bulrFun(val) {
+
+      console.log(val.target.value)
+      // eslint-disable-next-line vue/no-mutating-props
+      this.node.name = val.target.value
+      // this.emitUpdate()
+    },
+    changeitem() {
+      // eslint-disable-next-line vue/no-mutating-props
+      this.node.name = ''
+      // eslint-disable-next-line vue/no-mutating-props
+      this.node.children = [];
+
+      // this.dataSele.args = []
+    },
+    emitUpdate () {
       // 通知父组件当前节点发生了变化
       this.$emit("update", this.node);
+      // this.addChild()
     },
-    onTypeChange() {
+    onTypeChange () {
       // 当类型切换时，清空子节点
       if (this.node.type === "value") {
+      // eslint-disable-next-line vue/no-mutating-props
         this.node.name = "";
+      // eslint-disable-next-line vue/no-mutating-props
         this.node.children = [];
       }
       this.emitUpdate(); // 通知父组件
     },
-    addChild() {
+    changeVaule () {
+      if (this.node.type === "fun") {
+        this.addChild()
+      }
+      this.emitUpdate(); // 通知父组件
+    },
+    addChild () {
       // 添加一个新的子节点
+      // eslint-disable-next-line vue/no-mutating-props  
       this.node.children.push({
-        name: "新子节点1",
-        type: "value",
+        name: "",
+        type: "",
         children: [],
       },{
-        name: "新子节点2",
+        name: "",
         type: "value",
         children: [],
       });
       this.emitUpdate(); // 通知父组件
     },
-    updateChild(index, updatedChild) {
+    updateChild (index, updatedChild) {
       // 更新子节点的数据
+      // eslint-disable-next-line vue/no-mutating-props
       this.node.children[index] = updatedChild;
       this.emitUpdate(); // 通知父组件
     },
@@ -97,15 +134,26 @@ export default {
 
 <style scoped>
 .recursive-component {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 4px;
   display: flex;
 }
+.var-text{
+  color:red
+}
+.const-text{
+  color:blue
+}
+.fun-text{
+  color: green
+}
 .children {
-  margin-left: 20px;
+  margin-left: 10px;
   display: flex;
 
+}
+.foc-txt{
+  /* color: #409eff; */
+  cursor: pointer;
+  padding: 0 5px;
 }
 </style>
