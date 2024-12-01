@@ -39,6 +39,18 @@ export default new Router({
             name: 'TreeSelect',
             component: () =>
               import('../views/TreeSelect.vue')
+          },
+          {
+            path: '/home/rootPage',
+            name: 'rootPage',
+            component: () =>
+              import('../views/rootPage.vue')
+          },
+          {
+            path: '/home/rootTree',
+            name: 'treeRoot',
+            component: () =>
+              import('../views/treeRoot.vue')
           }
         ]
       },

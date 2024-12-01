@@ -8,20 +8,19 @@
 <script>
 const treeData = [
   { id: 1, name: '一级1', args: [{num: ''}]},
-  // {
-  //   id: 2,
-  //   name: '一级2',
-  //   function: 'max', args:[{num: ''},{num: ''}],
-  //   children: [
-  //     { id: 3, name: '二级2-1',function: 'max', args:[{num: ''},{num: ''}] },
-  //     { id: 4, name: '二级2-2', function: 'max', args:[{num: ''},{num: ''}],
-  //     children: [
-  //         { id: 7, name: '三级3-1-1',function: 'max', args:[{num: ''},{num: ''}] },
-  //         { id: 8, name: '三级3-1-2',function: 'max', args:[{num: ''},{num: ''}] }
-  //       ] }
-  //   ]
-  // },
-
+  {
+    id: 2,
+    name: '一级2',
+    function: 'max', args:[{num: ''},{num: ''}],
+    children: [
+      { id: 3, name: '二级2-1',function: 'max', args:[{num: ''},{num: ''}] },
+      { id: 4, name: '二级2-2', function: 'max', args:[{num: ''},{num: ''}],
+      children: [
+          { id: 7, name: '三级3-1-1',function: 'max', args:[{num: ''},{num: ''}] },
+          { id: 8, name: '三级3-1-2',function: 'max', args:[{num: ''},{num: ''}] }
+        ] }
+    ]
+  },
 ]
 import myTree from '@/components/SelectTreeItem.vue'
 // import SelectIem from '@/components/SelectIem.vue';

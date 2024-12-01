@@ -82,8 +82,8 @@ export default {
       this.selectFun = ''
 
     },
-    setArgs(val) {
-      const [obj] = this.options1.filter(item => item.value === val)
+    setArgs() {
+      // const [obj] = this.options1.filter(item => item.value === val)
 
       if(this.value === 'fun') {
         // this.item = {
@@ -97,7 +97,7 @@ export default {
         //   args: new Array(obj.arg).fill({num: ''})
         // })
         // const newO = JSON.parse(JSON.stringify(this.addArgs))
-        this.$emit('setArgs', new Array(obj.arg).fill({num: ''}),this.addArgs)
+        this.$emit('setArgs',this.addArgs)
       }
 
     }

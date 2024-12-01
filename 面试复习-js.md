@@ -76,3 +76,9 @@ function F() {
 var f = F()
 f() // 1
 ```
+
+
+### 递归组件vue2 + elment-ui
+
+
+

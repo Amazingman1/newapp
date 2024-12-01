@@ -41,12 +41,13 @@ export default {
     }
   },
   methods: {
-    nodeClick(item) {
-      this.$emit('node-click', item)
+    nodeClick() {
+      this.$forceUpdate
     },
-    getArgs(val, node) {
+    getArgs(val) {
       console.log(val, '函数有几个参数')
-      this.$emit('addArgs', val, node)
+      // node.push(val)
+      // this.$emit('addArgs', val, node)
     }
   }
 }
