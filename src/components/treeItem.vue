@@ -123,9 +123,11 @@ export default {
       this.emitUpdate(); // 通知父组件
     },
     updateChild (index, updatedChild) {
+      console.log("updateChild", index, updatedChild);
       // 更新子节点的数据
       // eslint-disable-next-line vue/no-mutating-props
       this.node.children[index] = updatedChild;
+      // 关键点在于递归组件更新数据
       this.emitUpdate(); // 通知父组件
     },
   },
