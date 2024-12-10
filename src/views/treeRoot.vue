@@ -4,6 +4,19 @@
       <RecursiveComponent :node="item" @update="updateTree" />
       <el-button @click="deleteItem(index)" type="primary">删除</el-button>
     </div>
+    <el-select v-model="value" placeholder="请选择">
+    <el-option-group
+      v-for="group in options"
+      :key="group.label"
+      :label="group.label">
+      <el-option
+        v-for="item in group.options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-option-group>
+  </el-select>
     <el-button @click="save" type="primary">保存</el-button>
     <el-button @click="addItem" type="primary">增加</el-button>
 
@@ -35,7 +48,35 @@ export default {
           children: [],
         },
 
-      ]
+      ],
+      options: [
+        {
+          label: '热门城市',
+          options: [{
+            value: 'Shanghai',
+            label: '上海'
+          }, {
+            value: 'Beijing',
+            label: '北京'
+          }]
+        }, 
+        {
+          label: '城市名',
+          options: [{
+            value: 'Chengdu',
+            label: '成都'
+          }, {
+            value: 'Shenzhen',
+            label: '深圳'
+          }, {
+            value: 'Guangzhou',
+            label: '广州'
+          }, {
+            value: 'Dalian',
+            label: '大连'
+          }]
+        }],
+        value: ''
     };
   },
   methods: {

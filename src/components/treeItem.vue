@@ -1,17 +1,17 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="recursive-component">
-    <div v-if="!node.name" class="node">
+    <div v-if="!node.name" class="node" style="display: flex; ">
       <!-- 显示当前节点 -->
-      <select v-model="node.type" @change="onTypeChange">
-        <option value="fun">函数</option>
-        <option value="var">变量</option>
-        <option value="const">常量</option>
-      </select>
+      <el-select v-model="node.type" @change="onTypeChange">
+        <el-option value="fun" label="函数"></el-option>
+        <el-option value="var" label="变量"></el-option>
+        <el-option value="const" label="常量"></el-option>
+      </el-select>
       <select v-if="node.type !== 'const'" v-model="node.name" @change="changeVaule">
         <option v-for="arg in args[node.type]" :key="arg.value" :value="arg.value">{{ arg.label }}</option>
       </select>
-      <input v-else @blur="bulrFun" />
+      <input v-else @blur="bulrFun" class="custom-input" />
     </div>
     <div v-else>
       <div v-if="node.type === 'fun'" class="children">
@@ -72,11 +72,16 @@ export default {
     };
   },
   methods: {
+    /**
+     * 
+     * description
+     */
     bulrFun (val) {
 
       console.log(val.target.value)
       // eslint-disable-next-line vue/no-mutating-props
       this.node.name = val.target.value
+      this.$forceUpdate()
       // this.emitUpdate()
     },
     changeitem () {
@@ -164,4 +169,14 @@ export default {
   padding: 0 5px;
 }
 
+.custom-input {
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  &:focus {
+    outline: none;
+    border: 1px solid #409eff;
+  }
+}
 </style>
