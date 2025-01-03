@@ -1,36 +1,43 @@
 <template>
-  <table>
-    <thead>
-      <tr>
-        <th rowspan="2">Product</th>
-        <th colspan="3">Quarter</th>
-      </tr>
-      <tr>
-        <th>Q1</th>
-        <th>Q2</th>
-        <th>Q3</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(row, index) in data" :key="index">
-        <td>{{ row.product }}</td>
-        <td>{{ row.q1 }}</td>
-        <td>{{ row.q2 }}</td>
-        <td>{{ row.q3 }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+
+    <el-input
+      v-model="inputValue"
+      placeholder="请输入正数、负数或小数"
+      @input="validateInput"
+    />
+    <el-button-group>
+      <el-button>输入参数</el-button>
+      <el-button>过程参数</el-button>
+      <el-button>输出参数</el-button>
+    </el-button-group>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      data: [
-        { product: 'Product A', q1: 10, q2: 20, q3: 30 },
-        { product: 'Product B', q1: 15, q2: 25, q3: 35 },
-      ],
+      inputValue: '', // 输入框绑定的值
     };
+  },
+  watch: {
+    formatNumber(value) {
+      return value.toFixed(2);
+      
+    }
+  },
+  filters: {
+    
+  },
+  methods: {
+    validateInput(value) {
+      this.inputValue = value
+        .replace(/[^0-9.-]/g, '') // 移除非法字符，只允许数字、负号和小数点
+        .replace(/(?!^)-/g, '') // 只保留第一个负号
+        .replace(/(\..*)\./g, '$1') // 只保留第一个小数点
+        .replace(/^(-?)0+(\d)/, '$1$2'); // 修正前导零
+    },
   },
 };
 </script>

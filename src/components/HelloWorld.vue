@@ -16,11 +16,26 @@
       <el-table-column prop="date" label="日期" width="180">
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="180">
+          <template slot-scope="scope">
+        <Tooltip content="Right Tooltip" placement="right">
+
+            {{ scope.row.name }}
+          </Tooltip>  
+          </template>
+  
       </el-table-column>
       <el-table-column fixed="right" label="金额" width="120">
         <template slot-scope="scope">
           <el-input :disabled="tableData[scope.$index].child.length > 0" v-model="tableData[scope.$index].amount"
             placeholder="请输入内容"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" label="日期" width="120">
+        <template slot="header" slot-scope="scope">
+         <TableFilter
+        
+          :keyword="scope.row.date">
+        </TableFilter>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="120">
@@ -80,7 +95,15 @@
 </style>
 
 <script>
+import Tooltip from "@/components/MyTooltip";
+import TableFilter from '@/components/TableFilter'
+
 export default {
+  components: {
+    Tooltip,
+    TableFilter
+  },
+
   methods: {
 
     reduceAmont () {

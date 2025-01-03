@@ -16,18 +16,16 @@
         </button>
       </div>
       <!-- 如果当前子节点还有子节点，递归调用 -->
-      <div v-if="childNode.grop && Object.keys(childNode.grop).length > 0 && childNode.grop.children.length > 0" class="node-children">
-        <recursive-node
-          :node="childNode.grop"
-          :childIndex="childIndex"
-          :parentChildren="node.grop.children"
-        />
+      <div v-if="childNode.grop && Object.keys(childNode.grop).length > 0 && childNode.grop.children.length > 0"
+        class="node-children">
+        <recursive-node :node="childNode.grop" :childIndex="childIndex" :parentChildren="node.grop.children" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "RecursiveNode",
   props: {
@@ -45,15 +43,27 @@ export default {
     },
   },
   computed: {
-    isRootNode() {
+    isRootNode () {
       return this.parentChildren === null; // 判断是否为根节点
     },
   },
-  created() {
+  created () {
     console.log(this.node, "当前节点");
   },
   methods: {
-    deleteChild(index) {
+
+    flattenTreeWithReduce (tree, childrenKey = 'children') {
+      return tree.reduce((acc, node) => {
+        const { [childrenKey]: children, ...rest } = node; // 提取节点和子节点
+        acc.push(rest);
+        if (children) {
+          acc.push(...this.flattenTreeWithReduce(children, childrenKey)); // 递归处理子节点
+        }
+        return acc;
+      }, []);
+    },
+
+    deleteChild (index) {
       // const child = this.node.children[index];
 
       // 删除目标子节点
@@ -73,7 +83,7 @@ export default {
         console.warn("根节点的 children 已为空，无法删除根节点！");
       }
     },
-    add() {
+    add () {
       // 新增同级节点
       // eslint-disable-next-line vue/no-mutating-props
       this.node.children.push({
@@ -83,7 +93,7 @@ export default {
         }
       });
     },
-    addChild() {
+    addChild () {
       // 新增子节点
       // eslint-disable-next-line vue/no-mutating-props
       this.node.children.push({
@@ -98,7 +108,7 @@ export default {
 
             }
           ]
-          
+
         }
       });
       console.log(this.node.children)
@@ -113,11 +123,13 @@ export default {
   padding: 10px;
   margin: 5px;
 }
+
 .node-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .node-children {
   margin-left: 20px;
 }

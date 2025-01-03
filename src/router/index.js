@@ -32,7 +32,7 @@ export default new Router({
             path: '/home/tableMix',
             name: 'tableMix',
             component: () =>
-              import('../views/tableMix copy.vue')
+              import('../views/tableMix.vue')
           },
           {
             path: '/home/TreeSelect',
@@ -51,6 +51,12 @@ export default new Router({
             name: 'treeRoot',
             component: () =>
               import('../views/treeRoot.vue')
+          },
+          {
+            path: '/home/tableFilter',
+            name: 'tableFilter',
+            component: () =>
+              import('../views/tableFilter.vue')
           }
         ]
       },

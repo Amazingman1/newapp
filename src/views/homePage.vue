@@ -28,6 +28,9 @@ export default {
   },
   errorCaptured (err, vm, info) {
     console.log(err, vm, info)
+    this.$nextTick(() => {
+      
+    })
   },
   methods: {
   

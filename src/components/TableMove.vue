@@ -3,6 +3,10 @@
     <el-button type="primary" @click="addIf">增加子条件</el-button>
     <el-button type="primary" @click="addRule">增加规则</el-button>
     <el-button type="primary" @click="saveTable">保存</el-button>
+    <el-button type="primary" @click="sendDta">发送</el-button>
+    <div>
+      <!-- <iframe ref="myFrame" src="http://localhost:5173" width="100%" height="500px"></iframe> -->
+    </div>
     <el-table :data="tableData" border style="width: 100%" :span-method="objectSpanMethod" @cell-click="handleClick" @row-contextmenu="handleContextmenu">
       <el-table-column prop="name" label="" width="120">
         <el-table-column v-for="item in colList" :key="item.label" :prop=item.prop :label=item.label
@@ -44,7 +48,11 @@ import DalogFormRule from './DalogFormRule.vue';
 export default {
 
   components: { DalogForm, DalogFormRule },
+
   methods: {
+    sendDta() {
+      this.$refs.myFrame.contentWindow.postMessage('2323', '*')
+    },
     getSpanArr (data) {
       for (var i = 0; i < data.length; i++) {
         if (i === 0) {
@@ -159,6 +167,11 @@ export default {
   },
   mounted () {
     this.getSpanArr(this.tableData)
+    // window.addEventListener('message', (event) => {
+    //   if(event.origin === 'http://localhost:8080') {
+    //     console.log(event.origin === 'http://localhost:8080', 'event.data')
+    //   }
+    // })
     // this.mergeBt();
   },
   computed: {
