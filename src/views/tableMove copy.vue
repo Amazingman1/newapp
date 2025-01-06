@@ -230,9 +230,9 @@ export default {
         inputBox.style.display = 'none';
       });
       inputBox.addEventListener('keydown', (e) => {
+        console.log(e.key);
         if (e.key === 'Enter') {
           this.handleInputEnter(e);
-          inputBox.style.display = 'none';
         }
       });
 
