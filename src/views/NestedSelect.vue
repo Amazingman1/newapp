@@ -1,175 +1,103 @@
-<!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="inline-input" style="display: flex;">
-    <div v-if="!dataSele.num" style="display: flex;">
-      <el-select v-model="fun" size="small" placeholder="请选择" style="margin-left: 10px; width: 60px"
-        @change="changeFun">
-        <el-option v-for="(item, index) in funList" :key="index" :value="item.value" :label="item.label" />
-      </el-select>
-      <el-select v-model="dataSele.num" size="small" placeholder="请选择" style="margin-left: 0px;width: 80px" @change="changeValue">
-        <el-option v-for="(item, index) in args[fun]" :key="index" :value="item.value" :label="item.label" />
-      </el-select>
-    </div>
-    <div v-else class="row-item">
-      <div v-if="fun === 'fun'" style="display: flex;flex-wrap: wrap;" >
-        <span @click="changeitem" class="foc-txt">{{ dataSele.num }}</span>
-        <span>(</span>
-          <span v-for="(item, index) in dataSele.args" :key="index" style="display: flex;">
-            <RuleItem :dataSele="item" @update="updateChild(index, $event)" ></RuleItem>
-            <div v-if="index !== dataSele.args.length - 1">,</div>
-          </span>
-        <span>)</span>
-      </div>
-      <div v-else>
-        <span class="foc-txt" @click="changeitem">{{ dataSele.num }}</span>
-      </div>
-    </div>
+  <div>
+    <el-cascader
+      ref="cascaderRef"
+      v-model="selectedValue"
+      :options="options"
+      :props="cascaderProps"
+      filterable
+      clearable
+      placeholder="请输入搜索内容"
+      :before-filter="beforeFilter"
+      @change="handleChange"
+    />
+    <el-button @click="getCheckedNodes">获取选中节点</el-button>
   </div>
 </template>
+
 <script>
-
 export default {
-  name: 'RuleItem',
-  props: {
-    selectValue: {
-      type: String,
-      default: ''
-    },
-    dataSele: {
-      tyepe: Object,
-      default: () => {
-        return {
-          type: "fun", // 默认初始类型为 "value"
-          num: '', // 默认初始值为空
-          args: [], //  默认初始参数为空数组
-        }
-      }
-    }
-  },
-  computed: {
-    // value: {
-    //   get() {
-    //     return this.selectValue
-    //   },
-    //   set(val) {
-    //     // console.log(val, 999)
-    //     this.$emit('update:selectValue', val)
-    //   }
-    // }
-
-    // dataProps: {
-    //   get() {
-    //     return this.dataSele
-    //   },
-    //   set(val) {
-    //     console.log(val, 999)
-    //     this.$emit('update:dataSele', val)
-    //   }
-    // }
-  },
-  watch: {
-    dataSele() {
-      console.log(this.dataSele, 888)
-    }
-  },
   data() {
     return {
-      value: '',
-      fun: '',
-      argsList: [
-        {num: ''},
-        {num: ''}
-      ],
-      args: {
-        fun: [
-        {
-          label: 'max',
-          value: 'max'
-        },
-        {
-          label: 'min',
-          value: 'min'
-        }
-        ],
-        var: [
-          {
-            label: 'age',
-            value: 'age'
-          },
-          {
-            label: 'name',
-            value: 'name'
-          }
-        ]
+      selectedValue: [],
+      options: [], // 级联数据
+      cascaderProps: {
+        label: "label",
+        value: "id",
+        children: "children"
       },
-      selectEmnData: [
-        {
-          label: 'max',
-          value: 'max'
-        },
-        {
-          label: 'min',
-          value: 'min'
-        }
-      ],
-      funList: [
-        {
-          value: 'fun',
-          label: '函数'
-        },
-        {
-          value: 'var',
-          label: '值'
-        }
-      ]
-    }
+      originalOptions: [] // 用于存储原始数据
+    };
   },
   methods: {
-    changeitem() {
-      // eslint-disable-next-line vue/no-mutating-props
-      this.dataSele.num = ''
-      this.fun = ''
-      // this.dataSele.args = []
+    // **模拟远程 API 获取数据**
+    async fetchOptions(query) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const data = [
+            {
+              id: 1,
+              label: `分类 ${query} A`,
+              children: [
+                { id: 11, label: `子分类 ${query} A1` },
+                { id: 12, label: `子分类 ${query} A2` }
+              ]
+            },
+            {
+              id: 2,
+              label: `分类 ${query} B`,
+              children: [
+                { id: 21, label: `子分类 ${query} B1` },
+                { id: 22, label: `子分类 ${query} B2` }
+              ]
+            }
+          ];
+          resolve(data);
+        }, 500);
+      });
     },
-    changeFun() {
-      // this.value = ''
-      // this.fun = val
-      this.$emit("update", this.dataSele);
-    },
-    changeValue(val) {
-      // this.value = val
-      this.changeFun()
-      if (this.dataSele.num === "var") {
-      // eslint-disable-next-line vue/no-mutating-props
-        this.dataSele.args = [];
-      } else {
 
-        console.log(val)
-        const obj = {
-          // type: this.fun,
-          num: '',
-          args: []
+    // **before-filter 远程搜索**
+    beforeFilter(query) {
+      // eslint-disable-next-line no-async-promise-executor
+      return new Promise(async (resolve) => {
+        if (!query) {
+          this.options = this.originalOptions; // 恢复原始数据
+          return resolve(true);
         }
-      // eslint-disable-next-line vue/no-mutating-props
-        this.dataSele.args.push(obj, obj)
-      }
-      // this.fun = 'value'
-      this.changeFun(); // 通知父组件
-    },
-    updateChild(index, updatedChild) {
-      // 更新子节点的数据
-      // eslint-disable-next-line vue/no-mutating-props
-      this.dataSele.args[index] = updatedChild;
-      this.changeFun(); // 通知父组件
-    },
-  }
-}
-</script>
 
-<style lang="scss" scoped>
-.foc-txt{
-  color: #409eff;
-  cursor: pointer;
-  padding: 0 5px;
-}
-</style>
+        try {
+          console.log("搜索关键字:", query);
+          const searchResults = await this.fetchOptions(query);
+
+          // **合并原始数据，避免丢失选中状态**
+          this.options = [...this.originalOptions, ...searchResults];
+
+          resolve(true); // 让 el-cascader 继续搜索
+        } catch (error) {
+          console.error("远程搜索失败", error);
+          resolve(false);
+        }
+      });
+    },
+
+    // **获取选中的节点**
+    getCheckedNodes() {
+      const checkedNodes = this.$refs.cascaderRef.getCheckedNodes();
+      console.log("选中的节点:", checkedNodes);
+    },
+
+    handleChange(value) {
+      console.log("选中的值:", value);
+      this.getCheckedNodes();
+    }
+  },
+  mounted() {
+    // **初始加载数据**
+    this.fetchOptions("").then((data) => {
+      this.options = data;
+      this.originalOptions = [...data]; // 备份数据
+    });
+  }
+};
+</script>

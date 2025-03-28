@@ -19,7 +19,8 @@ export default {
 
   data () {
     return {
-      routers: []
+      routers: [],
+      activeIndex: '1',
     }
   },
   mounted () {
@@ -29,11 +30,13 @@ export default {
   errorCaptured (err, vm, info) {
     console.log(err, vm, info)
     this.$nextTick(() => {
-      
+
     })
   },
   methods: {
-  
+    handleSelect (index) {
+      this.activeIndex = index
+    }
 
 
   }

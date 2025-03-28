@@ -16,24 +16,42 @@ export default new Router({
             component: () =>
               import('../views/tableMove.vue')
           },
+          // fileUpload
           {
-            path: '/home/tableFa',
-            name: 'TableFa',
+            path: '/home/filet',
+            name: 'Filet',
             component: () =>
-              import('../views/tableFa.vue')
+              import('../views/filet.vue')
           },
           {
-            path: '/home/tableSon',
-            name: 'TableSon',
+            path: '/home/test',
+            name: 'testMove',
             component: () =>
-              import('../views/vxTable.vue')
+              import('../views/testMove.vue'),
+            children: [
+              {
+                path: '/home/test/tableSon',
+                name: 'TableSon',
+                component: () =>
+                  import('../views/vxTable.vue')
+              },
+              {
+                path: '/home/test/tableMix',
+                name: 'tableMix',
+                component: () =>
+                  import('../views/tableMix.vue')
+              },
+            ]
           },
-          {
-            path: '/home/tableMix',
-            name: 'tableMix',
-            component: () =>
-              import('../views/tableMix.vue')
-          },
+          
+   
+       
+          // {
+          //   path: '/home/tableMix',
+          //   name: 'tableMix',
+          //   component: () =>
+          //     import('../views/tableMix.vue')
+          // },
           {
             path: '/home/TreeSelect',
             name: 'TreeSelect',
@@ -57,6 +75,31 @@ export default new Router({
             name: 'tableFilter',
             component: () =>
               import('../views/tableFilter.vue')
+          },
+          // tableGrid
+          {
+            path: '/home/tableGrid',
+            name: 'tableGrid',
+            component: () =>
+              import('../views/tableGrid.vue')
+          },
+          {
+            path: '/home/fileUpload',
+            name: 'fileUpload',
+            component: () =>
+              import('../views/fileUpload.vue')
+          },
+          {
+            path: '/home/NestedSelect',
+            name: 'NestedSelect',
+            component: () =>
+              import('../views/NestedSelect.vue')
+          },
+          {
+            path: '/home/mdEditor',
+            name: 'mdEditor',
+            component: () =>
+              import('../views/mdEditor.vue')
           }
         ]
       },

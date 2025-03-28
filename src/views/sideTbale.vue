@@ -1,29 +1,12 @@
 <template>
   <div>
     <h2>高清 Canvas 动态绘制表格</h2>
-    <div style="font-size: 60px;text-align: center;">
-      <span style="color: white;background: #409eff;border-radius: 5px;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-        <span>f</span>
-        <span>i</span>
-        <span>x</span>
-      </span>
-      <span>
-        <span>L</span>
-        <span>i</span>
-        <span>f</span>
-        <span>e</span>
-      </span>
-      <!-- <span>🌈</span>
-      <span>✨</span> -->
-    </div>
-    <!-- <canvas ref="tableCanvas" style="width: 100%;"></canvas>
-    <div id="inputContainer"></div> -->
+    <canvas ref="tableCanvas" style="width: 100%;"></canvas>
+    <div id="inputContainer"></div>
   </div>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld.vue';
-// import { isEqual } from 'lodash';
 export default {
   data() {
     return {
@@ -35,6 +18,7 @@ export default {
       rows: [
         ["数据1-1", "数据1-2", "数据1-3"],
         ["数据2-1", "数据2-2", "数据2-3"],
+        ["数据3-1", "数据3-2", "数据3-3"],
       ],
       cellWidth: 100,
       cellHeight: 40,
@@ -45,10 +29,10 @@ export default {
   },
   computed: {
     canvasLogicalWidth() {
-      return this.getTotalColumns(this.headers) * this.cellWidth;
+      return (this.getHeaderLevels(this.headers) + this.rows[0].length) * this.cellWidth;
     },
     canvasLogicalHeight() {
-      return (this.getHeaderLevels(this.headers) + this.rows.length) * this.cellHeight;
+      return this.getTotalColumns(this.headers) * this.cellHeight;
     },
   },
   methods: {
@@ -96,36 +80,36 @@ export default {
       this.buttonPositions = []; // 清空按钮位置
 
       const drawHeaders = (headers, startX, startY, level, maxLevel) => {
-        let currentX = startX;
+        let currentY = startY;
         headers.forEach((header, index) => {
-          const colSpan = this.getTotalColumns(header.children) || 1;
-          const headerWidth = colSpan * this.cellWidth;
+          const rowSpan = this.getTotalColumns(header.children) || 1;
+          const headerHeight = rowSpan * this.cellHeight;
 
-          const headerHeight =
+          const headerWidth =
             header.children.length === 0
-              ? (maxLevel - level + 1) * this.cellHeight
-              : this.cellHeight;
+              ? (maxLevel - level + 1) * this.cellWidth
+              : this.cellWidth;
 
           // 绘制背景
           ctx.fillStyle = "#f2f2f2";
-          ctx.fillRect(currentX, startY, headerWidth, headerHeight);
+          ctx.fillRect(startX, currentY, headerWidth, headerHeight);
 
           // 绘制边框
-          ctx.lineWidth = 1.5;
-          ctx.strokeStyle = "#000";
-          ctx.strokeRect(currentX, startY, headerWidth, headerHeight);
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = "#ccc";
+          ctx.strokeRect(startX, currentY, headerWidth, headerHeight);
 
           // 绘制文字
           ctx.fillStyle = "#000";
           ctx.fillText(
             header.label,
-            currentX + headerWidth / 2,
-            startY + headerHeight / 2
+            startX + headerWidth / 2,
+            currentY + headerHeight / 2
           );
 
           // 绘制添加按钮
-          const buttonX = currentX + headerWidth - 20;
-          const buttonY = startY + 5;
+          const buttonX = startX + headerWidth - 20;
+          const buttonY = currentY + 5;
           const buttonWidth = 15;
           const buttonHeight = 15;
 
@@ -148,14 +132,14 @@ export default {
           if (header.children.length > 0) {
             drawHeaders(
               header.children,
-              currentX,
-              startY + this.cellHeight,
+              startX + this.cellWidth,
+              currentY,
               level + 1,
               maxLevel
             );
           }
 
-          currentX += headerWidth;
+          currentY += headerHeight;
         });
       };
 
@@ -165,8 +149,8 @@ export default {
       // 绘制表格数据
       this.rows.forEach((row, rowIndex) => {
         row.forEach((cell, colIndex) => {
-          const x = colIndex * this.cellWidth;
-          const y = (maxLevel + rowIndex) * this.cellHeight;
+          const x = (maxLevel + colIndex) * this.cellWidth;
+          const y = rowIndex * this.cellHeight;
 
           // 绘制背景
           ctx.fillStyle = rowIndex % 2 === 0 ? "#ffffff" : "#f9f9f9";
@@ -217,13 +201,13 @@ export default {
       if (!buttonClicked) {
         // 检查点击位置是否在单元格区域内
         const maxLevel = this.getHeaderLevels(this.headers);
-        const rowIndex = Math.floor((logicalY - maxLevel * this.cellHeight) / this.cellHeight);
-        const colIndex = Math.floor(logicalX / this.cellWidth);
+        const rowIndex = Math.floor(logicalY / this.cellHeight);
+        const colIndex = Math.floor((logicalX - maxLevel * this.cellWidth) / this.cellWidth);
 
         if (rowIndex >= 0 && rowIndex < this.rows.length && colIndex >= 0 && colIndex < this.rows[rowIndex].length) {
           this.editingCell = { rowIndex, colIndex };
           this.inputValue = this.rows[rowIndex][colIndex];
-          this.renderInputBox(rect.left + colIndex * this.cellWidth, rect.top + (maxLevel + rowIndex) * this.cellHeight, this.cellWidth, this.cellHeight);
+          this.renderInputBox(rect.left + (maxLevel + colIndex) * this.cellWidth, rect.top + rowIndex * this.cellHeight, this.cellWidth, this.cellHeight);
         }
       }
     },
@@ -250,6 +234,8 @@ export default {
         console.log(e.key);
         if (e.key === 'Enter') {
           this.handleInputEnter(e);
+          inputBox.style.display = 'none';
+
         }
       });
 
@@ -266,7 +252,6 @@ export default {
     },
     // 更新单元格值
     updateCellValue(val) {
-      console.log('updateCellValue', this.headers, this.rows);                         
       if (this.editingCell) {
         const { rowIndex, colIndex } = this.editingCell;
         this.rows[rowIndex].splice(colIndex, 1, val);
@@ -280,11 +265,12 @@ export default {
       for (let i = 0; i < numColumns; i++) {
         const newHeader = { label: `子列${headerIndex + 1}-${targetHeader.children.length + 1}`, children: [] };
         targetHeader.children.push(newHeader);
+      }
 
-        // 在行数据中添加新列
-        this.rows.forEach((row, rowIndex) => {
-          row.push(`数据${rowIndex + 1}-${row.length + 1}`);
-        });
+      // 添加新行
+      for (let i = 0; i < numColumns; i++) {
+        const newRow = new Array(this.rows[0].length).fill(`数据${this.rows.length + 1}-${i + 1}`);
+        this.rows.push(newRow);
       }
 
       this.$nextTick(() => {

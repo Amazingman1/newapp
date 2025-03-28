@@ -31,8 +31,21 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
   margin-top: 60px;
+}
+:root {
+  --primary-color: #409EFF;
+  --success-color: #67C23A;
+  --danger-color: #F56C6C;
+  --text-color: #303133;
+  --border-color: #DCDFE6;
+}
+
+#app {
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 
+               'Microsoft YaHei', Arial, sans-serif;
+  color: var(--text-color);
 }
 </style>

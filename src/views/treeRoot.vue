@@ -1,24 +1,21 @@
 <template>
   <div>
-    <div v-for="(item, index) in treeDataList" :key="index" class="selecet-con">
-      <RecursiveComponent :node="item" @update="updateTree" />
-      <el-button @click="deleteItem(index)" type="primary">删除</el-button>
+    <div v-for="(item, index) in treeDataList" :key="index" >
+      <div class="selecet-con">
+        <RecursiveComponent :node="item" @update="updateTree" />
+        <slot :Node="item" :index="index" :parent="parent"></slot>
+      </div>
+      <div v-if="item.children.length > 0" class="selecet-con">
+        <treeRoot
+         :treeRoot="item.children"
+         @update="updateTree"
+        >
+        <slot :Node="item" :index="index" :parent="parent"></slot>
+        </treeRoot>
+      </div>
     </div>
-    <el-select v-model="value" placeholder="请选择">
-    <el-option-group
-      v-for="group in options"
-      :key="group.label"
-      :label="group.label">
-      <el-option
-        v-for="item in group.options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-option-group>
-  </el-select>
-    <el-button @click="save" type="primary">保存</el-button>
-    <el-button @click="addItem" type="primary">增加</el-button>
+
+    <!-- <el-button @click="save" type="primary">保存</el-button> -->
 
   </div>
 </template>
@@ -27,57 +24,35 @@
 import RecursiveComponent from "../components/treeItem.vue";
 
 export default {
+  name: "treeRoot",
   components: { RecursiveComponent },
+  props: {
+    treeRoot: {
+      type: Array,
+      default: () => ([]),
+    },
+  },
   data () {
     return {
       // 树的初始数据
-      treeData: {
-        name: "",
-        type: "",
-        children: [],
-      },
-      treeDataList: [
-        {
-          name: "",
-          type: "",
-          children: [],
-        },
-        {
-          name: "",
-          type: "",
-          children: [],
-        },
-
-      ],
-      options: [
-        {
-          label: '热门城市',
-          options: [{
-            value: 'Shanghai',
-            label: '上海'
-          }, {
-            value: 'Beijing',
-            label: '北京'
-          }]
-        }, 
-        {
-          label: '城市名',
-          options: [{
-            value: 'Chengdu',
-            label: '成都'
-          }, {
-            value: 'Shenzhen',
-            label: '深圳'
-          }, {
-            value: 'Guangzhou',
-            label: '广州'
-          }, {
-            value: 'Dalian',
-            label: '大连'
-          }]
-        }],
-        value: ''
+      parent: {}
     };
+  },
+  computed: {
+    // 递归组件
+    treeDataList: {
+      get () {
+        return this.treeRoot;
+      },
+      set (val) {
+        this.$emit('update:treeRoot', val)
+      }
+    }
+    
+  },
+  created () {
+    this.parent = this.$parent['treeRoot'];
+    console.log(parent, '父组件');
   },
   methods: {
     // 接收子组件传递的更新数据
@@ -88,12 +63,34 @@ export default {
     save () {
       console.log(this.treeDataList, '加载结果');
     },
+    addchild(treeDataList, item) {
+      let parent = {id: 0};
+      if(this.$parent.treeDataList&&this.$parent.treeDataList.length > 0) {
+        parent = this.$parent.treeDataList[this.$parent.treeDataList.length - 1];
+        console.log(parent, '父组件');
+        console.log(treeDataList, item, '新增子规则');
+      }
+      item.children.push({
+        parentId: parent? parent.id : 0,
+        id: parent? parent.id + 1 : 1,
+        name: "",
+        type: "",
+        children: [],
+      })
+      console.log(treeDataList, '新增子规则结果');
+      this.$emit('updateTree')
+
+    },
     addItem () {
+      let id = this.treeDataList[this.treeDataList.length -1].id
       this.treeDataList.push({
+        id: id + 1,
         name: "",
         type: "",
         children: [],
       });
+      console.log(this.treeDataList, '增加');
+      this.$emit('updateTree')
     },
     deleteItem (index) {
       this.treeDataList.splice(index, 1);

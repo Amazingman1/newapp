@@ -16,12 +16,20 @@ import VxeUI from 'vxe-pc-ui'
 import 'vxe-pc-ui/lib/style.css'
 import VxeUITable from 'vxe-table'
 import 'vxe-table/lib/style.css'
+import VMdPreview from '@kangc/v-md-editor/lib/preview';
+import '@kangc/v-md-editor/lib/style/preview.css';
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+import hljs from 'highlight.js';
 
+VMdPreview.use(githubTheme, {
+  Hljs: hljs,
+});
 Vue.use(VxeUI)
 Vue.use(VxeUITable)
 Vue.config.productionTip = false
 Vue.use(ElementUI);
-
+Vue.use(VMdPreview);
 Vue.config.errorHandler = function(err, vm, info) {
   console.log(`Error: ${err.toString()}\nInfo: ${info}`);
 };
