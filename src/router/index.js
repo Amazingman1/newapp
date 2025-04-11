@@ -100,6 +100,12 @@ export default new Router({
             name: 'mdEditor',
             component: () =>
               import('../views/mdEditor.vue')
+          },
+          {
+            path: '/home/input',
+            name: 'input',
+            component: () =>
+              import('../views/input.vue')
           }
         ]
       },
